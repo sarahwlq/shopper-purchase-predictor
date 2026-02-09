@@ -5,10 +5,8 @@ import joblib
 import plotly.graph_objects as go
 import plotly.express as px
 
-# ============================================================================
-# MODEL LOADING WITH ERROR HANDLING
-# ============================================================================
 
+# MODEL LOADING WITH ERROR HANDLING
 import gdown
 MODEL_PATH = "model.joblib"
 
@@ -27,10 +25,8 @@ def load_model():
 
 model = load_model()
 
-# ============================================================================
-# PAGE CONFIGURATION
-# ============================================================================
 
+# PAGE CONFIGURATION
 st.set_page_config(
     page_title="Purchase Predictor", 
     layout="wide", 
@@ -41,7 +37,8 @@ st.set_page_config(
 st.markdown("""
     <style>
     .insight-box {
-        background-color: #e8f4f8;
+        background-color: #1f2937;
+        color: #ffffff;
         padding: 15px;
         border-radius: 8px;
         border-left: 4px solid #1f77b4;
@@ -50,10 +47,8 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# ============================================================================
-# INPUT VALIDATION FUNCTION
-# ============================================================================
 
+# INPUT VALIDATION FUNCTION
 def validate_inputs(pages, time, checkout, intent):
     """Validate user inputs and return errors/warnings"""
     errors = []
@@ -77,13 +72,12 @@ def validate_inputs(pages, time, checkout, intent):
     
     return errors, warnings
 
-# ============================================================================
+
 # SIDEBAR - INFORMATION & GUIDE
-# ============================================================================
 
 with st.sidebar:
     st.header("ℹ️ About")
-    st.write("ML-powered tool to predict if a visitor will purchase based on browsing behavior.")
+    st.write("MLDP tool to predict if a visitor will purchase based on browsing behavior.")
     
     st.divider()
     st.header("📊 Probability Guide")
@@ -100,18 +94,14 @@ with st.sidebar:
     st.write("4. Pages viewed")
     st.write("5. Bounce/exit rates")
 
-# ============================================================================
-# MAIN HEADER
-# ============================================================================
 
+# MAIN HEADER
 st.title("🛒 Online Shopper Purchase Predictor")
 st.write("Predict purchase probability based on visitor browsing behavior")
 st.divider()
 
-# ============================================================================
-# QUICK EXAMPLE SCENARIOS (INTERACTIVE)
-# ============================================================================
 
+# EXAMPLE SCENARIOS (INTERACTIVE)
 st.subheader("📋 Quick Examples")
 col1, col2, col3, col4 = st.columns(4)
 
@@ -142,10 +132,8 @@ defaults = scenarios.get(scenario, scenarios['default'])
 
 st.divider()
 
-# ============================================================================
-# USER INPUT FORM
-# ============================================================================
 
+# USER INPUT FORM
 st.subheader("📝 Visitor Session Data")
 
 # Two-column layout for cleaner input
@@ -216,10 +204,8 @@ with col_right:
         help="Likelihood of leaving the site"
     )
 
-# ============================================================================
-# INPUT VALIDATION & DISPLAY
-# ============================================================================
 
+# INPUT VALIDATION & DISPLAY
 # Validate inputs before prediction
 errors, warnings = validate_inputs(product_pages, product_time, checkout, intent_label)
 
@@ -234,10 +220,8 @@ if warnings:
 
 st.divider()
 
-# ============================================================================
-# PREDICTION BUTTON & PROCESSING
-# ============================================================================
 
+# PREDICTION BUTTON & PROCESSING
 if st.button("🔮 Predict Purchase Probability", type="primary", use_container_width=True, disabled=len(errors) > 0):
     
     # Mapping dictionaries for categorical inputs
@@ -299,10 +283,8 @@ if st.button("🔮 Predict Purchase Probability", type="primary", use_container_
         st.error(f"❌ Prediction error: {str(e)}")
         st.stop()
     
-    # ========================================================================
+
     # RESULTS DISPLAY - INTERACTIVE GAUGE CHART
-    # ========================================================================
-    
     st.subheader("📊 Prediction Result")
     
     # Create interactive gauge chart
@@ -341,11 +323,9 @@ if st.button("🔮 Predict Purchase Probability", type="primary", use_container_
     else:
         st.error("❌ **VERY UNLIKELY** - Very low purchase intent")
     
-    # ========================================================================
+
     # KEY INFLUENCING FACTORS
-    # ========================================================================
-    
-    st.subheader("🔍 Key Factors Analysis")
+    st.subheader("🔍 Factors Influencing Prediction")
     
     # Identify top factors affecting prediction
     factors = []
@@ -379,39 +359,33 @@ if st.button("🔮 Predict Purchase Probability", type="primary", use_container_
         emoji = "🟢" if "POSITIVE" in impact else "🔴"
         st.markdown(f"{emoji} **{factor}** — {magnitude} impact")
     
-    # ========================================================================
-    # ACTIONABLE INSIGHTS
-    # ========================================================================
-    
-    st.subheader("💡 Actionable Recommendations")
+
+    # ACTIONABLE INSIGHTS    
+    st.subheader("💡 Recommended Business Actions")
     
     insights = []
     
     if prob < 0.5:
         # Recommendations for low-probability visitors
         if checkout == "No":
-            insights.append("🎯 **Priority Action:** Guide visitor to checkout - could boost probability by 25-35%")
+            insights.append("Guide visitor to checkout page to increase purchase likelihood.")
         if page_value < 80:
-            insights.append("🎁 Show personalized recommendations to increase engagement")
+            insights.append("Show personalized product recommendations.")
         if product_time < 300:
-            insights.append("💬 Deploy live chat or time-limited offers to retain visitor")
+            insights.append("Encourage visitor to spend more time browsing.")
         if bounce >= 0.3:
-            insights.append("⚡ Use exit-intent popup with special discount")
+            insights.append("Offer discount or promotion to retain visitor.")
     else:
         # Recommendations for high-probability visitors
-        insights.append("🎉 **Hot Lead Detected!** Recommended actions:")
-        insights.append("   • Show limited-time discount to create urgency")
-        insights.append("   • Prepare abandoned cart email sequence")
-        insights.append("   • Display trust badges and customer reviews")
-    
+        insights.append("Visitor shows strong purchase signals.")
+        insights.append("Ensure checkout process is smooth.")
+        insights.append("Provide clear pricing and trust indicators.")
+
     # Display insights in styled boxes
     for insight in insights:
         st.markdown(f'<div class="insight-box">{insight}</div>', unsafe_allow_html=True)
     
-    # ========================================================================
-    # COMPARISON CHART
-    # ========================================================================
-    
+    # COMPARISON CHART    
     st.subheader("📈 Performance Comparison")
     
     # Create comparison data
@@ -443,10 +417,8 @@ if st.button("🔮 Predict Purchase Probability", type="primary", use_container_
     )
     st.plotly_chart(fig2, use_container_width=True)
     
-    # ========================================================================
-    # WHAT-IF SCENARIOS
-    # ========================================================================
-    
+
+    # WHAT-IF SCENARIOS to improve probability
     with st.expander("🔮 What-If Scenarios — How to Improve"):
         st.write("**If this visitor...**")
         
