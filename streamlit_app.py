@@ -1,10 +1,30 @@
+import os
 import streamlit as st
 import pandas as pd
 import joblib
 
-# load trained model
-model = joblib.load("model.joblib")
+#load trained model via google drive
+import gdownload as gdown
+import os
+MODEL_PATH = "model.joblib"
 
+@st.cache_resource
+def load_model():
+
+    if not os.path.exists(MODEL_PATH):
+
+        file_id = "18-odIvylEZnk2PcBF6lhnhvuo5PyyefD"
+
+        url = f"https://drive.google.com/uc?id={file_id}"
+
+        gdown.download(url, MODEL_PATH, quiet=False)
+
+    model = joblib.load(MODEL_PATH)
+
+    return model
+
+
+model = load_model()
 # page layout
 st.set_page_config(page_title="Online Shopper Purchase Predictor", layout="wide")
 
