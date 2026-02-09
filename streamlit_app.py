@@ -138,25 +138,25 @@ with center:
         # dataframe for model
         df = pd.DataFrame([{
             "Administrative": admin,
-            "Informational": 0,
-            "ProductRelated": product_pages,
             "Administrative_Duration": admin_time,
+            "Informational": 0,
             "Informational_Duration": 0,
+            "ProductRelated": product_pages,
             "ProductRelated_Duration": product_time,
-            "PageValues": page_value,
             "BounceRates": bounce,
             "ExitRates": exit_rate,
-            "Weekend": 0,
+            "PageValues": page_value,
             "SpecialDay": 0,
             "Month": "May",
+            "OperatingSystems": 1,
+            "Browser": 1,
             "Region": 1,
             "TrafficType": 1,
-            "Browser": 1,
-            "OperatingSystems": 1,
             "VisitorType": visitor_type,
-            "Engagement_Ratio": 0,
-            "Total_Duration": total_time
+            "Weekend": False
         }])
+        st.write("Columns sent to model:", df.columns.tolist())
+
 
         # model prediction
         prob = model.predict_proba(df)[0][1]
