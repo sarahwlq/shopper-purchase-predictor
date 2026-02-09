@@ -23,8 +23,8 @@ def load_model():
 
     return model
 
-
 model = load_model()
+
 # page layout
 st.set_page_config(page_title="Online Shopper Purchase Predictor", layout="wide")
 
@@ -133,7 +133,9 @@ with center:
         admin = 3 if checkout == "Yes" else 0
         admin_time = 120 if checkout == "Yes" else 0
         visitor_type = "Returning_Visitor" if visitor == "Returning Visitor" else "New_Visitor"
-        total_time = admin_time + product_time
+        total_duration = admin_time + product_time
+        engagement_ratio = product_pages / (product_time + 1)
+
 
         # dataframe for model
         df = pd.DataFrame([{
@@ -153,9 +155,13 @@ with center:
             "Region": 1,
             "TrafficType": 1,
             "VisitorType": visitor_type,
-            "Weekend": False
+            "Weekend": False,
+            "Engagement_Ratio": product_pages / (product_time + 1) if product_time > 0 else 0,
+            "Total_Duration": total_duration
         }])
         st.write("Columns sent to model:", df.columns.tolist())
+        st.write("Expected columns:", model.feature_names_in_)
+
 
 
         # model prediction
