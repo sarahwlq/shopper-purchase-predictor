@@ -159,10 +159,6 @@ with center:
             "Engagement_Ratio": product_pages / (product_time + 1) if product_time > 0 else 0,
             "Total_Duration": total_duration
         }])
-        st.write("Columns sent to model:", df.columns.tolist())
-        st.write("Expected columns:", model.feature_names_in_)
-
-
 
         # model prediction
         prob = model.predict_proba(df)[0][1]
