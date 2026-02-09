@@ -4,7 +4,7 @@ import pandas as pd
 import joblib
 
 #load trained model via google drive
-import gdownload as gdown
+import gdown
 import os
 MODEL_PATH = "model.joblib"
 
